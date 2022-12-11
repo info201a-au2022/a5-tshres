@@ -20,12 +20,11 @@ emissionsData <- read.csv("https://raw.githubusercontent.com/owid/co2-data/maste
 topPopulations <- emissionsData %>%
   select(year, country, population) %>%
   filter(year == "2021")
-View(topPopulations)
 
 top10 <- topPopulations %>%
   filter(!row_number() %in% c(257, 15, 136, 249, 2, 103, 74, 135, 218, 172)) %>%
   top_n(10, population) %>%
-  pull(country)
+  pull(country, "country")
 
 
 # What are average values of CO2 of the top most populated countries in 1900 AND 2021? (Variable 2: CO2)
@@ -62,36 +61,34 @@ topPopulations_2000 <- emissionsData %>%
 average_difference_GDP <- topPopulations_2000 - topPopulations_1900
 
 # Other data that is useful for line chart 
+
+list <- c("China", "India", "United States", "Indonesia",
+         "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico")
+
 table <- emissionsData %>%
   select(year, country, co2) %>%
   drop_na() %>%
-  filter(country == c("China", "India", "United States", "Indonesia",
-                      "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico"))
+  filter(country %in% list)
 
 table_gdp <- emissionsData %>%
   select(year, country, co2_per_gdp) %>%
   drop_na() %>%
-  filter(country == c("China", "India", "United States", "Indonesia",
-                      "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico"))
+  filter(country %in% list)
 
 table_gdp_trade <- emissionsData %>%
   select(year, country, trade_co2) %>%
   drop_na() %>%
-  filter(country == c("China", "India", "United States", "Indonesia",
-                      "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico"))
+  filter(country %in% list)
 
 
-shiny <- function(input, output){
+server <- function(input, output){
   output$radioButton <- renderPlotly({
     
     if(input$CO2Value == "CO2"){
       chart_data <- table %>%
-        select(year, country, co2) %>%
-        drop_na() %>%
-        filter(country %in% country) %>%
         filter(table$year >= input$time[1], table$year <= input$time[2]) %>%
-        group_by(year, country) %>%
-        summarise(co2= sum(co2, na.rm = TRUE))
+        group_by(year, country)
+     #   summarize(co2= sum(co2))
     
     
       plot_line_chart <- ggplot(chart_data) +
@@ -104,16 +101,12 @@ shiny <- function(input, output){
     
       ggplotly(plot_line_chart)
     
-  }
-    else
-      if(input$CO2Value == "CO2 per GDP") {
+  }else
+   if(input$CO2Value == "CO2 per GDP") {
       chart_data2 <- table_gdp %>%
-      select(year, country, co2_per_gdp) %>%
-      drop_na() %>%
-      filter(country %in% country) %>%
       filter(table_gdp$year >= input$time[1], table_gdp$year <= input$time[2]) %>%
-      group_by(year, country) %>%
-      summarise(co2_per_gdp = sum(co2_per_gdp, na.rm = TRUE))
+      group_by(year, country)
+   #   summarize(co2_per_gdp = sum(co2_per_gdp))
     
     
     plot_line_chart2 <- ggplot(chart_data2) +
@@ -124,16 +117,12 @@ shiny <- function(input, output){
         Title = "CO2 per GDP in Populated Countries")
     
     ggplotly(plot_line_chart2)
-      }
     
-    else{
+    } else{
       chart_data3 <- table_gdp_trade %>%
-        select(year, country, trade_co2) %>%
-        drop_na() %>%
-        filter(country %in% country) %>%
         filter(table_gdp_trade$year >= input$time[1], table_gdp_trade$year <= input$time[2]) %>%
-        group_by(year, country) %>%
-        summarise(trade_co2 = sum(trade_co2, na.rm = TRUE))
+        group_by(year, country)
+       # summarize(trade_co2 = sum(trade_co2))
       
       
       plot_line_chart3 <- ggplot(chart_data3) +

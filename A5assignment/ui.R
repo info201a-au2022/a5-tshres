@@ -12,16 +12,14 @@ library(plotly)
 library(tidyverse)
 library(scales)
 library(shiny)
-install.packages(plotly)
+
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(
   title = "CO2 Emissions Data Analysis",
     tabPanel(
       "Introduction",
-      #fluidPage(
       img(src = "https://nenow.in/wp-content/uploads/2019/08/file-20170615-23574-gzh6p7.jpg", height = "50%", width = "50%", align = "center"),
-    #  ),
   h3(strong("Brief Overview")),
   h3("Carbon dioxide emissions caused by people, contain a large impact on other individuals, along with where they live. While being one of the greatest causes towards climate change, CO2 emissions have been increasing in many different countries. In order to represent the impact of CO2 emissions, data compiled by “Our World in Data” will be used. "),
   #),
