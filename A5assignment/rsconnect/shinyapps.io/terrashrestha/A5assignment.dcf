@@ -5,9 +5,9 @@ account: terrashrestha
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7865331
-bundleId: 6622254
+bundleId: 6624094
 url: https://terrashrestha.shinyapps.io/A5assignment/
-when: 1670738899.75988
-lastSyncTime: 1670738899.75989
+when: 1670792269.01903
+lastSyncTime: 1670792269.01905
 asMultiple: FALSE
 asStatic: FALSE

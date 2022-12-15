@@ -1,12 +1,3 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 source("ui.R")
 library(plotly)
@@ -63,7 +54,7 @@ average_difference_GDP <- topPopulations_2000 - topPopulations_1900
 # Other data that is useful for line chart 
 
 list <- c("China", "India", "United States", "Indonesia",
-         "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico")
+          "Pakistan", "Brazil", "Nigeria", "Bangladesh", "Russia", "Mexico")
 
 table <- emissionsData %>%
   select(year, country, co2) %>%
@@ -88,53 +79,53 @@ server <- function(input, output){
       chart_data <- table %>%
         filter(table$year >= input$time[1], table$year <= input$time[2]) %>%
         group_by(year, country)
-     #   summarize(co2= sum(co2))
-    
-    
+      #   summarize(co2= sum(co2))
+      
+      
       plot_line_chart <- ggplot(chart_data) +
         geom_line(mapping = aes(x = year, y = co2, colour = country)) +
         labs(
           x = "Year",
           y = "CO2",
           Title = "CO2 Emissions in Populated Countries")
-    
-    
+      
+      
       ggplotly(plot_line_chart)
-    
-  }else
-   if(input$CO2Value == "CO2 per GDP") {
-      chart_data2 <- table_gdp %>%
-      filter(table_gdp$year >= input$time[1], table_gdp$year <= input$time[2]) %>%
-      group_by(year, country)
-   #   summarize(co2_per_gdp = sum(co2_per_gdp))
-    
-    
-    plot_line_chart2 <- ggplot(chart_data2) +
-      geom_line(mapping = aes(x = year, y = co2_per_gdp, colour = country)) +
-      labs(
-        x = "Year",
-        y = "CO2 per GDP",
-        Title = "CO2 per GDP in Populated Countries")
-    
-    ggplotly(plot_line_chart2)
-    
-    } else{
-      chart_data3 <- table_gdp_trade %>%
-        filter(table_gdp_trade$year >= input$time[1], table_gdp_trade$year <= input$time[2]) %>%
-        group_by(year, country)
-       # summarize(trade_co2 = sum(trade_co2))
       
-      
-      plot_line_chart3 <- ggplot(chart_data3) +
-        geom_line(mapping = aes(x = year, y = trade_co2, colour = country)) +
-        labs(
-          x = "Year",
-          y = "Trade CO2",
-          Title = "Trade CO2 in Populated Countries")
-      
-      ggplotly(plot_line_chart3)
-      
-    }
+    }else
+      if(input$CO2Value == "CO2 per GDP") {
+        chart_data2 <- table_gdp %>%
+          filter(table_gdp$year >= input$time[1], table_gdp$year <= input$time[2]) %>%
+          group_by(year, country)
+        #   summarize(co2_per_gdp = sum(co2_per_gdp))
+        
+        
+        plot_line_chart2 <- ggplot(chart_data2) +
+          geom_line(mapping = aes(x = year, y = co2_per_gdp, colour = country)) +
+          labs(
+            x = "Year",
+            y = "CO2 per GDP",
+            Title = "CO2 per GDP in Populated Countries")
+        
+        ggplotly(plot_line_chart2)
+        
+      } else{
+        chart_data3 <- table_gdp_trade %>%
+          filter(table_gdp_trade$year >= input$time[1], table_gdp_trade$year <= input$time[2]) %>%
+          group_by(year, country)
+        # summarize(trade_co2 = sum(trade_co2))
+        
+        
+        plot_line_chart3 <- ggplot(chart_data3) +
+          geom_line(mapping = aes(x = year, y = trade_co2, colour = country)) +
+          labs(
+            x = "Year",
+            y = "Trade CO2",
+            Title = "Trade CO2 in Populated Countries")
+        
+        ggplotly(plot_line_chart3)
+        
+      }
     
   })
 }

@@ -25,8 +25,8 @@ ui <- navbarPage(
   #),
     h3(strong("Three Relevant Variables That Were Calculated:")),
     h3("Which are the 10 most populated countries in 2021? ", strong("Bangladesh, Brazil, China, India, Indonesia, Mexico, Nigeria, Pakistan, Russia, United States")),
-    h3("What are average values of CO2 of the top most populated countries in 1900 AND 2021?", strong("Average value in 1900: ", topPopulations_1900), strong("Average value in 2021: ", topPopulations_2021)),
-    h3("How much has the CO2 per GDP variable changed over the past 100 years, in the 10 highest populated countries? ", strong(average_difference_GDP))
+    h3("What are average values of CO2 of the top most populated countries in 1900 AND 2021? Average value in 1900 was 180.0242, and in 2021, it was 2291.997"),
+    h3("How much has the CO2 per GDP variable changed over the past 100 years, in the 10 highest populated countries? It has gone down by -0.209235")
   ),
   
 
